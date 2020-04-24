@@ -68,8 +68,10 @@ export class Api implements OnInit {
                 {name: 'tabIndex: number', summary: `Set the underlying tab index of the select. (Default is 0)`},
                 {name: 'outlined: boolean', summary: `Styles the select as an outlined select.`},
                 {name: 'disabled: boolean', summary: `Enables/disables the select.`},
-                {name: 'helperText: MdcHelperText', summary: `Reference to related MdcHelperText`},
                 {name: 'compareWith: (o1: any, o2: any) => boolean', summary: `Function to compare the option values with the selected values. The first argument is a value from an option. The second is a value from the selection. A boolean should be returned.`},
+                {name: 'helper: string', summary: `Helper text to display below the input when focused.`},
+                {name: 'helperPersistent: boolean', summary: 'Always show the helper text despite focus.'},
+                {name: 'validationMessage: string', summary: 'Message to show in the error color when the select is invalid. (Helper text will not be visible)'},
               ]
             },
             {
@@ -87,30 +89,6 @@ export class Api implements OnInit {
                 {name: 'selectionChange(source: MdcSelect, index: number, value: any)', summary: `Event emitted if user changed the value.`},
                 {name: 'blur(value)', summary: `Emitted whenever the select loses focus.`},
                 {name: 'focus(boolean)', summary: `Emitted when the select gains or loses focus.`},
-              ]
-            },
-          ]
-        },
-        {
-          header: 'MDCSelectHelperText',
-          selectors: [
-            'mdc-select-helper-text',
-            'mdcSelectHelperText'
-          ],
-          exportedAs: 'mdcSelectHelperText',
-          categories: [
-            {
-              name: 'Properties',
-              items: [
-                {name: 'validation: boolean', summary: `Help text can be used to provide additional validation messages.`},
-                {name: 'persistent: boolean', summary: `Help text will always be visible.`},
-              ]
-            },
-            {
-              name: 'Methods',
-              items: [
-                {name: 'showToScreenReader()', summary: `Makes the helper text visible to the screen reader.`},
-                {name: 'setValidity(inputIsValid: boolean)', summary: `Sets the validity of the helper text.`},
               ]
             },
           ]
