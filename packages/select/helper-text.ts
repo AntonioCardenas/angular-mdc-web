@@ -13,7 +13,6 @@ export class MdcSelectHelperTextFoundation extends MDCComponent<MDCSelectHelperT
   private _initialized: boolean = false;
 
   _helperLineElement?: HTMLElement;
-  private _helperTextContentElement?: HTMLElement;
 
   get foundation(): MDCSelectHelperTextFoundation {
     return this._foundation;
@@ -27,12 +26,12 @@ export class MdcSelectHelperTextFoundation extends MDCComponent<MDCSelectHelperT
 
   getDefaultFoundation() {
     const adapter: MDCSelectHelperTextAdapter = {
-      addClass: (className: string) => this._helperTextContentElement!.classList.add(className),
-      removeClass: (className: string) => this._helperTextContentElement!.classList.remove(className),
-      hasClass: (className: string) => this._helperTextContentElement!.classList.contains(className),
-      setAttr: (attr: string, value: string) => this._helperTextContentElement!.setAttribute(attr, value),
-      removeAttr: (attr: string) => this._helperTextContentElement!.removeAttribute(attr),
-      setContent: (content: string) => this._helperTextContentElement!.textContent = content,
+      addClass: (className: string) => this._helperLineElement!.classList.add(className),
+      removeClass: (className: string) => this._helperLineElement!.classList.remove(className),
+      hasClass: (className: string) => this._helperLineElement!.classList.contains(className),
+      setAttr: (attr: string, value: string) => this._helperLineElement!.setAttribute(attr, value),
+      removeAttr: (attr: string) => this._helperLineElement!.removeAttribute(attr),
+      setContent: (content: string) => this._helperLineElement!.textContent = content,
     };
     return new MDCSelectHelperTextFoundation(adapter);
   }
@@ -76,20 +75,15 @@ export class MdcSelectHelperTextFoundation extends MDCComponent<MDCSelectHelperT
   /** Destroys the foundation. */
   destroy() {
     this._helperLineElement?.parentNode?.removeChild(this._helperLineElement);
-    this._hostElement = this._helperLineElement = this._helperTextContentElement = null!;
+    this._hostElement = this._helperLineElement = null!;
     this._foundation.destroy();
     this._initialized = false;
   }
 
   /** Creates and appends the helper element. */
   private _createHelperElement() {
-    this._helperLineElement = this._document.createElement('div');
-    this._helperTextContentElement = this._document.createElement('div');
-
-    this._helperLineElement.className = 'mdc-select-helper-line';
-    this._helperTextContentElement.className = 'mdc-select-helper-text';
-
-    this._helperLineElement.appendChild(this._helperTextContentElement);
+    this._helperLineElement = this._document.createElement('p');
+    this._helperLineElement.className = 'mdc-select-helper-text';
     this._appendHelperElement();
   }
 

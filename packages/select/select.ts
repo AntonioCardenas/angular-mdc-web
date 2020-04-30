@@ -163,6 +163,7 @@ export class MdcSelect extends _MdcSelectMixinBase implements AfterViewInit, DoC
       this._required = newValue;
       if (this._initialized && !this._required) {
         this.valid = true;
+        this._syncHelperValidityState();
         this._changeDetectorRef.markForCheck();
       }
     }
@@ -462,7 +463,7 @@ export class MdcSelect extends _MdcSelectMixinBase implements AfterViewInit, DoC
       value: this._value
     });
 
-    this._isValid();
+    this._syncHelperValidityState();
 
     this._foundation.handleChange();
     this._changeDetectorRef.markForCheck();
@@ -564,26 +565,11 @@ export class MdcSelect extends _MdcSelectMixinBase implements AfterViewInit, DoC
     this._onTouched();
     this.blur.emit(this.value);
     this._onFocus.emit(false);
-    this._isValid();
+    this._syncHelperValidityState();
   }
 
   private _isValid(): boolean {
-    const showValidationMessage = !!this.validationMessage && !this._valid || this.errorState;
-
-    if (this._shouldRenderHelperText()) {
-      this._foundationHelper?.setContent(showValidationMessage ?
-        this.validationMessage ?? '' : this.helper ?? '');
-
-      if (showValidationMessage) {
-        this._foundationHelper?.setValidation(showValidationMessage);
-      }
-    }
-
-    if (this.ngControl) {
-      return !this.errorState;
-    }
-
-    return !showValidationMessage;
+    return (!!this.validationMessage && !this._hasValue && this.required) || this.errorState;
   }
 
   private _getFloatingLabel(): MdcFloatingLabel | undefined {
@@ -597,6 +583,17 @@ export class MdcSelect extends _MdcSelectMixinBase implements AfterViewInit, DoC
 
     this._foundationHelper!.setContent(this.helper ?? '');
     this._foundationHelper!.setPersistent(this._helperPersistent);
+  }
+
+  private _syncHelperValidityState(): void {
+    const showValidationMessage = this._isValid();
+
+    if (this._shouldRenderHelperText()) {
+      this._foundationHelper?.setContent(showValidationMessage ?
+        this.validationMessage ?? '' : this.helper ?? '');
+
+      this._foundationHelper?.setValidation(showValidationMessage);
+    }
   }
 
   private _initHelperFoundation(): void {
